@@ -7,5 +7,6 @@ namespace Learninator.Models
         public int Id { get; set; }
         public string Name { get; set; }
         //public List<Tag> Subtags { get; set; }
+        public ICollection<LinkTag> LinkTags { get; set; }
     }
 }

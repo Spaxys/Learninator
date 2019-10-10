@@ -7,26 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Learninator.Database;
 using Learninator.Models;
-using Learninator.ViewModels;
 
 namespace Learninator.Controllers
 {
-    public class LinksController : Controller
+    public class TagsController : Controller
     {
         private readonly LearninatorContext _context;
 
-        public LinksController(LearninatorContext context)
+        public TagsController(LearninatorContext context)
         {
             _context = context;
         }
 
-        // GET: Links
+        // GET: Tags
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Links.ToListAsync());
+            return View(await _context.Tags.ToListAsync());
         }
 
-        // GET: Links/Details/5
+        // GET: Tags/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +33,39 @@ namespace Learninator.Controllers
                 return NotFound();
             }
 
-            var link = await _context.Links
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (link == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(link);
+            return View(tag);
         }
 
-        // GET: Links/Create
+        // GET: Tags/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Links/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Url,Title")] Link link)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(link);
+                _context.Add(tag);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(link);
+            return View(tag);
         }
 
-        // GET: Links/Edit/5
+        // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +73,22 @@ namespace Learninator.Controllers
                 return NotFound();
             }
 
-            var link = await _context.Links.FindAsync(id);
-            if (link == null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            return View(link);
+            return View(tag);
         }
 
-        // POST: Links/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Url,Title")] Link link)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Tag tag)
         {
-            if (id != link.Id)
+            if (id != tag.Id)
             {
                 return NotFound();
             }
@@ -98,12 +97,12 @@ namespace Learninator.Controllers
             {
                 try
                 {
-                    _context.Update(link);
+                    _context.Update(tag);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LinkExists(link.Id))
+                    if (!TagExists(tag.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +113,10 @@ namespace Learninator.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(link);
+            return View(tag);
         }
 
-        // GET: Links/Delete/5
+        // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,80 +124,30 @@ namespace Learninator.Controllers
                 return NotFound();
             }
 
-            var link = await _context.Links
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (link == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(link);
+            return View(tag);
         }
 
-        // POST: Links/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var link = await _context.Links.FindAsync(id);
-            _context.Links.Remove(link);
+            var tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetTags(int? id)
+        private bool TagExists(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var link = await _context.Links
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (link == null)
-            {
-                return NotFound();
-            }
-            var tags = _context.LinkTags
-                .Where(m => m.LinkId == id)
-                .Include(lt => lt.Tag)
-                .Select(lt => lt.Tag)
-                .ToList();
-
-
-            ViewBag.LinkId = id;
-            return View(tags);
-
-        }
-
-        public async Task<IActionResult> ConnectTags(int? id)
-        {
-            var tags = await _context.Tags
-                .Select(n => new SelectListItem
-                {
-                    Value = n.Id.ToString(),
-                    Text = n.Name
-                }).ToListAsync();
-            var model = new ConnectTagsVM
-            {
-                LinkId = id,
-                TagId = null,
-                Tags = tags
-            };
-            return View(model);
-        }
-
-        [HttpPost, ActionName("ConnectTags")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConnectTags([Bind("LinkId, TagId")] ConnectTagsVM model)
-        {
-
-            return RedirectToAction("GetTags", new { id = model.LinkId });
-        }
-
-        private bool LinkExists(int id)
-        {
-            return _context.Links.Any(e => e.Id == id);
+            return _context.Tags.Any(e => e.Id == id);
         }
     }
 }

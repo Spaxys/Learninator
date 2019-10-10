@@ -3,14 +3,16 @@ using Learninator.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Learninator.Migrations
 {
     [DbContext(typeof(LearninatorContext))]
-    partial class LearninatorContextModelSnapshot : ModelSnapshot
+    [Migration("20191010140045_dropping link tag rel")]
+    partial class droppinglinktagrel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,19 +35,6 @@ namespace Learninator.Migrations
                     b.ToTable("Link");
                 });
 
-            modelBuilder.Entity("Learninator.Models.LinkTag", b =>
-                {
-                    b.Property<int>("LinkId");
-
-                    b.Property<int>("TagId");
-
-                    b.HasKey("LinkId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("LinkTag");
-                });
-
             modelBuilder.Entity("Learninator.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -57,19 +46,6 @@ namespace Learninator.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tag");
-                });
-
-            modelBuilder.Entity("Learninator.Models.LinkTag", b =>
-                {
-                    b.HasOne("Learninator.Models.Link", "Link")
-                        .WithMany("LinkTags")
-                        .HasForeignKey("LinkId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Learninator.Models.Tag", "Tag")
-                        .WithMany("LinkTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

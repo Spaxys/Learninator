@@ -1,0 +1,20 @@
+﻿@model Learninator.ViewModels.ConnectTagsVM
+@{
+    ViewData["Title"] = "ConnectTags";
+}
+
+<h1>ConnectTags</h1>
+<form asp-action="ConnectTags">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LinkId" />
+            <div class="form-group">
+                <select asp-for="TagId" asp-items="Model.Tags">
+                    <option value="">Pick one</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+
