@@ -54,7 +54,7 @@ namespace Learninator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Link link)
+        public async Task<IActionResult> Create([Bind("Id,Url,Title")] Link link)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Learninator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Link link)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Url,Title")] Link link)
         {
             if (id != link.Id)
             {
