@@ -192,6 +192,13 @@ namespace Learninator.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConnectTags([Bind("LinkId, TagId")] ConnectTagsVM model)
         {
+            var linkTag = new LinkTag
+            {
+                LinkId = (int)model.LinkId,
+                TagId = (int)model.TagId
+            };
+            _context.Add(linkTag);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("GetTags", new { id = model.LinkId });
         }
