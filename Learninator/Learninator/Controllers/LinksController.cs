@@ -23,7 +23,12 @@ namespace Learninator.Controllers
         // GET: Links
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Links.ToListAsync());
+            var linksWithTags = await _context.Links
+                .Include(x => x.LinkTags)
+                .ThenInclude(y => y.Tag)
+                .AsNoTracking()
+                .ToListAsync();
+            return View(linksWithTags);
         }
 
         // GET: Links/Details/5

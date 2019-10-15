@@ -144,6 +144,21 @@ namespace Learninator.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> GetTagByName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Name == name);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return Json(tag.Id);
+        }
+
 
         private bool TagExists(int id)
         {

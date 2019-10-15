@@ -1,0 +1,40 @@
+﻿@model Learninator.ViewModels.TaggingVM
+@{
+    ViewData["Title"] = "Tagging";
+}
+
+<h1>Tagging</h1>
+
+<form method="post">
+    <label asp-for="Name" class="control-label" />
+    <input asp-for="Name" type="text" id="tagInput" class="form-control" />
+    <h2 id="tagId">-2</h2>
+    <input type="submit" value="Create" class="btn btn-default" />
+</form>
+
+@section scripts
+{
+<script src="~/js/Tag.js"></script>
+<script>
+    $(document).ready(function () {
+        var input = $("#tagInput");
+        input.on("change", x => {
+            console.log("change!")
+            //var id = Tag.GetByName(input.val());
+
+            var id = -1;
+            var result = $.ajax({
+                url: "/Tags/GetTagByName?name=" + name,
+                success: function (data) {
+                    id = data
+                },
+                async: false
+            });
+            console.log("Tag.GetByName returns: " + id);
+
+            console.log("Id: " + id);
+            $("#tagId").html = id;
+        }) 
+    })
+</script>
+}
