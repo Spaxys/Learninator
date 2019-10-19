@@ -15,20 +15,44 @@
 
 @section scripts
 {
-<script src="~/js/Tag.js?v=1_10"></script>
+<script src="~/js/Tag.js" asp-append-version="true"></script>
 <script>
-   $(document).ready(async function () {
+   $(document).ready(function () {
         var inputTag = $("#tagInput");
         var idTag = $("#tagId");
         var nameTag = $("#tagName");
        inputTag.on("change keyup", x => {
-
-            Tag.getByName(inputTag.val(), function (result) {
-                idTag.html(result.id);
-                nameTag.html(result.name);
-            });
-
-        }) 
+           var inputs = inputTag.val().split(';');
+           var ids = "";
+           var names = "";
+           var promises = [];
+           console.log(inputs);
+           for (var i = 0; i < inputs.length; i++)
+           {
+               console.log("Iteration " + i + " of " + inputs.length);
+               promises.push(Tag.getByName(inputs[i]));
+           }
+           Promise.all(promises)
+               .then(function (values) {
+                   idTag.html("");
+                   nameTag.html("");
+                   console.log(values);
+                   console.log("Typeof values: " + typeof values);
+                   for (var v of values) {
+                   console.log("Value: " + JSON.stringify(v));
+                   console.log("Typeof value: " + typeof v);
+                       ids += ", " + v.id;
+                       names += ", " + v.name;
+                   };
+                   idTag.html(ids);
+                   nameTag.html(names);
+               })
+               .catch(error => {
+                   console.log(error)
+                   idTag.html("");
+                   nameTag.html("");
+               });
+        })
     })
 
 </script>
