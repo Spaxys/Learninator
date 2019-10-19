@@ -151,12 +151,17 @@ namespace Learninator.Controllers
                 return NotFound();
             }
 
-            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Name == name);
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tag == null)
             {
                 return NotFound();
             }
-            return Json(tag.Id);
+            var result = new
+            {
+                Id = tag.Id,
+                Name = tag.Name
+            };
+            return Json(result);
         }
 
 

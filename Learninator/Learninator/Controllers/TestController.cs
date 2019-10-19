@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Learninator.Models;
+using Learninator.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learninator.Controllers
@@ -15,7 +17,14 @@ namespace Learninator.Controllers
 
         public IActionResult Tagging()
         {
+            //var model = new LinkWithTagsVM
+            //{
+            //    Link = null,
+            //    Tags = new List<Tag>()
+            //};
             return View();
         }
+
+        //public IActionResult Tagging()
     }
 }
