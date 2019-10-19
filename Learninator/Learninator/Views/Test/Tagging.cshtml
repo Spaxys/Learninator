@@ -15,32 +15,21 @@
 
 @section scripts
 {
-@*<script src="~/js/Tag.js"></script>*@
+<script src="~/js/Tag.js?v=1_10"></script>
 <script>
-    $(document).ready(function () {
-        var input = $("#tagInput");
-        var tagId = $("#tagId");
-        var tagName = $("#tagName");
-        input.on("change keyup", x => {
-            console.log("change!")
-            //var id = Tag.GetByName(input.val());
+   $(document).ready(async function () {
+        var inputTag = $("#tagInput");
+        var idTag = $("#tagId");
+        var nameTag = $("#tagName");
+       inputTag.on("change keyup", x => {
 
-            $.ajax({
-                url: "/Tags/GetTagByName?name=" + input.val(),
-                contentType: "application/json",
-                success: function (data) {
-                    var id = data.id;
-                    var name = data.name;
+            Tag.getByName(inputTag.val(), function (result) {
+                idTag.html(result.id);
+                nameTag.html(result.name);
+            });
 
-                    tagId.html(id);
-                    tagName.html(name);
-                },
-                error: function () {
-                    tagId.html(-1);
-                    tagName.html("[NoTagFound]");
-                }
-            }); 
         }) 
     })
+
 </script>
 }

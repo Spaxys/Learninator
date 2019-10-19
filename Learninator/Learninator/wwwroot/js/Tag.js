@@ -1,15 +1,13 @@
 ﻿var Tag = {
-    GetByName: function(name) {
-        var id = -1;
-        var result = $.ajax({
-            url: "/Tags/GetTagByName?name=" + name,
-            success: function (data) {
-                id = data
-            },
-            contentType: "application/json",
-            async: false
+    getByName: function (input, callback)
+    {
+        $.ajax({
+            url: "/Tags/GetTagByName?name=" + input,
+            contentType: "application/json"
+        })
+        .done(callback)
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            // Handle error
         });
-        console.log("Tag.GetByName returns: " + id);
-        return id;
     }
 }
