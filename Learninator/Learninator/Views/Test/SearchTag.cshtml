@@ -8,8 +8,8 @@
 
 <form method="post">
     <label asp-for="Name" class="control-label" />
-    <div style="border: 1px solid;">
-        <span id="tagSet"></span><input style="display:inline" asp-for="Name" type="text" id="tagInput" /><br/>
+    <div class="tag-main">
+        <span id="tagSet" class="tagset"></span><input style="display:inline" autocomplete="off" asp-for="Name" type="text" id="tagInput" /><br/>
     </div>
     <span id="tagName">[TagName]</span>
     <h2 id="tagId">-2</h2>
@@ -21,56 +21,7 @@
     <script src="~/js/Tag.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
-            let inputTagId = "tagInput";
-            var inputTag = document.getElementById(inputTagId);
-            var idTag = document.getElementById("tagId");
-            var nameTag = document.getElementById("tagName");
-            $(inputTag).on("keyup", x => {
-                var input = $(inputTag).val();
-                var ids = "";
-                var names = "";
-                Tag.searchByName(input)
-                    .then(function (values) {
-                        handleSearchResults(values, inputTagId, idTag, nameTag)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        $(idTag).html("");
-                        $(nameTag).html("");
-                    });
-            });
-
+            var tagger = new Tag.Tag("tagInput", "tagName", "tagSet", "tagId"); 
         });
-
-        var handleSearchResults = function (values, inputTagId, idTag, nameTag) {
-            $(idTag).html("");
-            $(nameTag).html("");
-            console.log(values);
-            console.log("Typeof values: " + typeof values);
-            for (var v of values) {
-                console.log("Value: " + JSON.stringify(v));
-                console.log("Typeof value: " + typeof v);
-                var tag = document.createElement("span");
-                tag.value = v.id;
-                tag.id = "tag_" + v.id;
-                tag.innerText = v.name;
-                tag.classList.add("btn");
-                tag.classList.add("btn-default");
-                nameTag.appendChild(tag);
-                new TagButton(tag);
-            }
-        }
-
-        function TagButton(domobj) {
-            this.o = domobj;
-            // Closure time! Preserve this 'this', using 'that'
-            var that = this;
-            domobj.onclick = function () { return that.clickHandler(); };
-        }
-        // Handler of clicks
-        TagButton.prototype.clickHandler = function () {
-            Tag.fillTag(this.o, "tagInput", "tagSet", "tagId")
-            Tag.clearButtons("tagName");
-        }
-    </script>
+            </script>
 }

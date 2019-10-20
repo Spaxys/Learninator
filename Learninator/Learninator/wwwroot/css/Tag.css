@@ -1,0 +1,17 @@
+﻿.tag-main {
+    border: 1px solid;
+}
+.tag-main input[type="text"] {
+    border-right: none;
+}
+
+.tagset {
+
+}
+.tagset .tag {
+    border-radius: 2px;
+    background-color: lightgray;
+    margin: 3px;
+    padding: 3px;
+}
+
