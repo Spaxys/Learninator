@@ -4,12 +4,12 @@
 }
 
 <h1>Tagging</h1>
+@Html.ActionLink("Back", "Index", "Test")
 
 <form method="post">
     <label asp-for="Name" class="control-label" />
-    <input asp-for="Name" type="text" id="tagInput" class="form-control" />
+    <span id="tagName">[TagName]</span><input style="display:inline" asp-for="Name" type="text" id="tagInput" />
     <h2 id="tagId">-2</h2>
-    <h2 id="tagName">[TagName]</h2>
     <input type="submit" value="Create" class="btn btn-default" />
 </form>
 
@@ -21,7 +21,7 @@
         var inputTag = $("#tagInput");
         var idTag = $("#tagId");
         var nameTag = $("#tagName");
-       inputTag.on("change keyup", x => {
+       inputTag.on("change", x => {
            var inputs = inputTag.val().split(';');
            var ids = "";
            var names = "";

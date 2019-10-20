@@ -17,14 +17,12 @@ namespace Learninator.Controllers
 
         public IActionResult Tagging()
         {
-            //var model = new LinkWithTagsVM
-            //{
-            //    Link = null,
-            //    Tags = new List<Tag>()
-            //};
             return View();
         }
 
-        //public IActionResult Tagging()
+        public IActionResult SearchTag()
+        {
+            return View();
+        }
     }
 }

@@ -163,6 +163,21 @@ namespace Learninator.Controllers
             };
             return Json(result);
         }
+        public async Task<IActionResult> SearchTagByName(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var tags = await _context.Tags.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+            if (!tags.Any())
+            {
+                return NotFound();
+            }
+            return Json(tags);
+        }
+
 
 
         private bool TagExists(int id)
