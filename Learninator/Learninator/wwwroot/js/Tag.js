@@ -1,8 +1,10 @@
 ﻿var Tag = {
-    Tag: function (inputElemId, nameElemId, tagSetId, idElemId) {
+    Tag: function (inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId) {
         var inputTag = document.getElementById(inputElemId);
         var idTag = document.getElementById(idElemId);
         var nameTag = document.getElementById(nameElemId);
+        var deleteLastTagButton = document.getElementById(btnDeleteLastTagId);
+        var tagSet = document.getElementById(tagSetId);
         $(inputTag).on("keyup", x => {
             var input = $(inputTag).val();
             Tag.searchByName(input)
@@ -14,6 +16,9 @@
                     $(idTag).html("");
                     $(nameTag).html("");
                 });
+        });
+        $(deleteLastTagButton).on("click", y => {
+            tagSet.removeChild(tagSet.lastChild);
         });
 
     },

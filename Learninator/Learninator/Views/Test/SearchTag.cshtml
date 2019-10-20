@@ -13,6 +13,7 @@
     </div>
     <span id="tagName">[TagName]</span>
     <h2 id="tagId">-2</h2>
+<a id="btnDeleteLastTag"class="btn btn-default" style="background-color:lightcoral">Delete last tag</a>
     <input type="submit" value="Create" class="btn btn-default" />
 </form>
 
@@ -21,7 +22,7 @@
     <script src="~/js/Tag.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
-            var tagger = new Tag.Tag("tagInput", "tagName", "tagSet", "tagId"); 
+            var tagger = new Tag.Tag("tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag"); 
         });
             </script>
 }
