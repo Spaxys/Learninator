@@ -23,6 +23,8 @@ namespace Learninator.Repositories
 
         public async Task<bool> SaveTagsOnLink(List<Tag> tags, int linkId)
         {
+            //Update behavior inspired by the following post:
+            // https://stackoverflow.com/questions/42735368/updating-related-data-with-entity-framework-core
             var link = _context.Links
                 .Include(x => x.LinkTags)
                 .ThenInclude(y => y.Tag)
