@@ -1,4 +1,4 @@
-﻿@model Learninator.ViewModels.TaggingVM
+﻿@model Learninator.ViewModels.TagsVM
 @{
     ViewData["Title"] = "SearchTag";
 }
@@ -6,10 +6,10 @@
 <h1>SearchTag</h1>
 @Html.ActionLink("Back", "Index", "Test")
 
-<form method="post">
-    <label asp-for="Name" class="control-label" />
+<form method="post" onsubmit="saveTags()">
+
     <div class="tag-main">
-        <span id="tagSet" class="tagset"></span><input style="display:inline" autocomplete="off" asp-for="Name" type="text" id="tagInput" /><br/>
+        <span id="tagSet" class="tagset"></span><input style="display:inline" autocomplete="off" type="text" id="tagInput" /><br/>
     </div>
     <span id="tagName">[TagName]</span>
     <h2 id="tagId">-2</h2>
@@ -24,5 +24,6 @@
         $(document).ready(function () {
             var tagger = new Tag.Tag("tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag"); 
         });
-            </script>
+
+    </script>
 }

@@ -19,6 +19,15 @@ namespace Learninator
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    // clear default logging providers
+                    logging.ClearProviders();
+
+                    // add built-in providers manually, as needed 
+                    logging.AddConsole();
+                    logging.AddDebug();
+                });
     }
 }

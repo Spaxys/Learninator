@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Learninator.Database;
 using Learninator.Models;
+using Learninator.ViewModels;
+using Learninator.Repositories;
 
 namespace Learninator.Controllers
 {
     public class TagsController : Controller
     {
         private readonly LearninatorContext _context;
+        private readonly ITagsRepository _tagsRepository;
 
-        public TagsController(LearninatorContext context)
+        public TagsController(LearninatorContext context, 
+            ITagsRepository tagsRepository)
         {
             _context = context;
+            _tagsRepository = tagsRepository;
         }
 
         // GET: Tags
@@ -178,6 +183,30 @@ namespace Learninator.Controllers
             return Json(tags);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SaveTagsOnLink([FromBody]TagsVM model)
+        {
+            if(model == null)
+            {
+                return BadRequest();
+            }
+            var link = _context.Links.Find(model.LinkId);
+            if(link == null)
+            {
+                return BadRequest();
+            }
+
+            var mappedTags = model.Tags.Select(x => new Tag
+            {
+                Id = (int)x.Id,
+                Name = x.Name
+            }).ToList();
+            var result = await _tagsRepository.SaveTagsOnLink(mappedTags, model.LinkId);
+            return Json(new
+            {
+                Result = "OK"
+            });
+        }
 
 
         private bool TagExists(int id)
