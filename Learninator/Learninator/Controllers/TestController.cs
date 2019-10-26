@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Learninator.Models;
+using Learninator.Repositories;
 using Learninator.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,9 +17,12 @@ namespace Learninator.Controllers
     public class TestController : Controller
     {
         private readonly ILogger _logger;
-        public TestController(ILogger<TestController> logger)
+        private readonly ITagsRepository _tagsRepository;
+
+        public TestController(ILogger<TestController> logger, ITagsRepository tagsRepository)
         {
             _logger = logger;
+            _tagsRepository = tagsRepository;
         }
         public IActionResult Index()
         {
@@ -30,13 +34,21 @@ namespace Learninator.Controllers
             return View();
         }
 
-        public IActionResult SearchTag()
+        public async Task<IActionResult> SearchTag()
         {
+            var linkId = 1;
+            var linkWithTags = await _tagsRepository.GetLinkWithTags(linkId);
             var model = new TagsVM
             {
-                Tags = new List<TaggingVM>()
+                LinkId = linkId,
+                Tags = linkWithTags.LinkTags.Select(x => new TaggingVM
+                {
+                    Id = (int?)x.Tag.Id,
+                    Name = x.Tag.Name
+
+                }).ToList()
             };
-            ViewBag.LinkId = 1;
+            ViewBag.LinkId = linkId;
             return View(model);
         }
 

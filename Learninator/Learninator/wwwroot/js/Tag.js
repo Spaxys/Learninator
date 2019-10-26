@@ -1,19 +1,28 @@
 ﻿var Tag = {
     Tag: class {
-        constructor(tagForm, inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId, linkId) {
+        constructor(tagForm, inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId, linkId, existingTags) {
             this.tagForm = tagForm;
             this.inputElemId = inputElemId;
             this.nameElemId = nameElemId;
-            this.tagSetId = idElemId;
+            this.tagSetId = tagSetId;
             this.idElemId = idElemId;
             this.btnDeleteLastTagId = btnDeleteLastTagId;
             this.linkId = linkId;
+            this.existingTags = existingTags;
             var inputTag = document.getElementById(inputElemId);
             var idTag = document.getElementById(idElemId);
             var nameTag = document.getElementById(nameElemId);
             var deleteLastTagButton = document.getElementById(btnDeleteLastTagId);
             var tagSet = document.getElementById(tagSetId);
 
+            //Setup initial tags
+            console.log("Start adding existing tags");
+            debugger;
+            for (var t of this.existingTags) {
+                console.log("Adding existing tag: " + JSON.stringify(t));
+                this.fillTagByData(t.Id, t.Name, this.inputElemId, this.tagSetId, this.idElemId);
+            }
+            console.log("Finished adding existing tags");
             //Register the search event
             $(inputTag).on("keyup", x => {
                 var input = $(inputTag).val();
@@ -87,6 +96,23 @@
             tagSet.appendChild(newTag);
             tagIdsElem.innerHTML = el.value;
         }
+        fillTagByData(id, name, inputId, tagSetId, tagIds) {
+            var input = document.getElementById(inputId);
+            var tagSet = document.getElementById(tagSetId);
+            var tagIdsElem = document.getElementById(tagIds);
+            input.innerHTML = '';
+            input.value = '';
+            var newTag = document.createElement("span");
+            newTag.innerHTML = name;
+            newTag.classList.add("tag");
+            newTag.id = id;
+            newTag.value = id;
+            newTag.setAttribute("data-name", name);
+            newTag.name = "Tags";
+            tagSet.appendChild(newTag);
+            tagIdsElem.innerHTML = id;
+        }
+
         clearButtons(buttonsId) {
             var buttons = document.getElementById(buttonsId);
             while (buttons.firstChild) {

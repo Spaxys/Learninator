@@ -65,5 +65,15 @@ namespace Learninator.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Link> GetLinkWithTags(int linkId)
+        {
+            var linkWithTags = await _context.Links
+                .Include(x => x.LinkTags)
+                .ThenInclude(y => y.Tag)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == linkId);
+            return linkWithTags;
+        }
     }
 }

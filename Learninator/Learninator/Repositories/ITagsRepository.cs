@@ -6,6 +6,7 @@ namespace Learninator.Repositories
 {
     public interface ITagsRepository
     {
+        Task<Link> GetLinkWithTags(int linkId);
         Task<bool> SaveTagsOnLink(List<Tag> tags, int linkId);
     }
 }

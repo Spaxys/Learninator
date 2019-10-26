@@ -26,7 +26,14 @@
     <script src="~/js/Tag.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
-            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", 1); 
+            var tagsArray = [];
+
+            @foreach (var t in Model.Tags)
+            {
+
+                @:tagsArray.push({Id: @t.Id, Name: "@t.Name"})
+            }
+            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", 1, tagsArray); 
         });
 
     </script>
