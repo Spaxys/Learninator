@@ -35,9 +35,10 @@ namespace Learninator.Repositories
                 throw new Exception("No link on this id");
 
             var oldLinkTags = link.LinkTags;
+            // Remove unused tags
             foreach(var olt in oldLinkTags)
             {
-                var linkTag = tags.SingleOrDefault(x => x.Id == olt.LinkId);
+                var linkTag = tags.SingleOrDefault(x => x.Id == olt.TagId);
                 if (linkTag == null)
                     _context.Remove(olt);
                 _logger.LogInformation("Removed LinkTag with TagId: " + olt.TagId);

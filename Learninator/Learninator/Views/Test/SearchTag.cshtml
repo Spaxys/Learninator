@@ -6,7 +6,7 @@
 <h1>SearchTag</h1>
 @Html.ActionLink("Back", "Index", "Test")
 
-<form method="post" onsubmit="saveTags()">
+<form method="post" onsubmit="Tag.saveTags(@ViewBag.LinkId )">
 
     <div class="tag-main">
         <span id="tagSet" class="tagset"></span><input style="display:inline" autocomplete="off" type="text" id="tagInput" /><br/>

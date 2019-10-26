@@ -36,6 +36,7 @@ namespace Learninator.Controllers
             {
                 Tags = new List<TaggingVM>()
             };
+            ViewBag.LinkId = 1;
             return View(model);
         }
 

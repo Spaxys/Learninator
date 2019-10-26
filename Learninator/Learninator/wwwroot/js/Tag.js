@@ -79,16 +79,11 @@
         var nameTag = document.getElementById(nameTagId);
         $(nameTag).html("");
         $(idTag).html("");
-        //console.log(values);
-        //console.log("Typeof values: " + typeof values);
         for (var v of values) {
-            //console.log("Value: " + JSON.stringify(v));
-            //console.log("Typeof value: " + typeof v);
             var tag = document.createElement("span");
             tag.value = v.id;
             tag.id = "tag_" + v.id;
             tag.setAttribute("data-name", v.name);
-            //console.log("Data-name set! Result: " + tag.getAttribute("data-name"));
             tag.innerText = v.name;
             tag.classList.add("btn");
             tag.classList.add("btn-default");
@@ -96,7 +91,41 @@
             nameTag.appendChild(tag);
             new TagButton(tag, tagInputId, tagSetId, nameTagId, idTagId);
         }
-    }
+    },
+    saveTags: function (linkId) {
+        event.preventDefault();
+        console.log("saveTags called!");
+        var tagSet = document.getElementById("tagSet");
+        var tags = tagSet.children;
+        var tagsArray = [].slice.call(tags);
+        var tagsMapped = tagsArray.map(function (el) {
+            return {
+                id: el.id,
+                name: el.attributes["data-name"].value
+            }
+        });
+
+        var postObject =
+        {
+            LinkId: linkId,
+            Tags: tagsMapped
+        };
+
+        $.ajax({
+            type: "POST",
+            //url: "/test/testpost",
+            url: "/Tags/SaveTagsOnLink",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(postObject),
+            error: function (xhr) {
+                alert('Error: ' + xhr.statusText)
+            },
+            success: function (msg) {
+                console.log(msg.result);
+            }
+        });
+    },
 }
 function TagButton(domobj, tagInputId, tagSetId, nameTagId, idElemId) {
     this.o = domobj;
@@ -114,37 +143,3 @@ TagButton.prototype.clickHandler = function () {
     Tag.clearButtons(this.nameTagId);
 }
 
-function saveTags() {
-    event.preventDefault();
-    console.log("saveTags called!");
-    var tagSet = document.getElementById("tagSet");
-    var tags = tagSet.children;
-    var tagsArray = [].slice.call(tags);
-    var tagsMapped = tagsArray.map(function (el) {
-        return {
-            id: el.id,
-            name: el.attributes["data-name"].value
-        }
-    });
-
-    var postObject =
-    {
-        LinkId: 1,
-        Tags: tagsMapped
-    };
-
-    $.ajax({
-        type: "POST",
-        //url: "/test/testpost",
-        url: "/Tags/SaveTagsOnLink",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify(postObject),
-        error: function (xhr) {
-            alert('Error: ' + xhr.statusText)
-        },
-        success: function (msg) {
-            console.log(msg.result);
-        }
-    });
-}
