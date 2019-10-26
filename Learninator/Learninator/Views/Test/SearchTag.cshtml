@@ -6,7 +6,7 @@
 <h1>SearchTag</h1>
 @Html.ActionLink("Back", "Index", "Test")
 
-<form method="post" onsubmit="Tag.saveTags(@ViewBag.LinkId )">
+<form id="tagForm" method="post" onsubmit="">
 
     <div class="tag-main">
         <span id="tagSet" class="tagset"></span><input style="display:inline" autocomplete="off" type="text" id="tagInput" /><br/>
@@ -22,7 +22,7 @@
     <script src="~/js/Tag.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
-            var tagger = new Tag.Tag("tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag"); 
+            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", 1); 
         });
 
     </script>
