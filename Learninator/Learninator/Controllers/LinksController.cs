@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using Learninator.Database;
 using Learninator.Models;
 using Learninator.ViewModels;
+using Learninator.Repositories;
 
 namespace Learninator.Controllers
 {
     public class LinksController : Controller
     {
         private readonly LearninatorContext _context;
+        private ITagsRepository _tagsRepository;
 
-        public LinksController(LearninatorContext context)
+        public LinksController(LearninatorContext context,
+            ITagsRepository tagsRepository)
         {
             _context = context;
+            _tagsRepository = tagsRepository;
         }
 
         // GET: Links
@@ -72,7 +76,7 @@ namespace Learninator.Controllers
         }
 
         // GET: Links/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -206,6 +210,28 @@ namespace Learninator.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("GetTags", new { id = model.LinkId });
+        }
+
+        public async Task<IActionResult> EditTags(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var linkWithTags = await _tagsRepository.GetLinkWithTags((int)id);
+            var model = new TagsVM
+            {
+                LinkId = (int)id,
+                Tags = linkWithTags.LinkTags.Select(x => new TaggingVM
+                {
+                    Id = (int?)x.Tag.Id,
+                    Name = x.Tag.Name
+
+                }).ToList()
+            };
+            //ViewBag.LinkId = linkId;
+            return View(model);
         }
 
         private bool LinkExists(int id)
