@@ -166,7 +166,7 @@
                     alert('Error: ' + xhr.statusText)
                 },
                 success: function (msg) {
-                    console.log(msg.result);
+                    console.log(msg);
                 }
             });
         }

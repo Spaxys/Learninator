@@ -64,5 +64,10 @@ namespace Learninator.Controllers
             _logger.LogInformation(JsonConvert.SerializeObject(json));
             return Json(new { Result = "Yay, it works!" });
         }
+
+        public IActionResult TestCreateOrGetTag()
+        {
+            return View();
+        }
     }
 }

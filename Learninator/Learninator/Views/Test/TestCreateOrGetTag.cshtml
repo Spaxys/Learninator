@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "TestCreateOrGetTag";
+}
+
+<h1>TestCreateOrGetTag</h1>
+
+<input type="text" id="tagInput" />
+<a href="#" id="btnCreate">Create</a>
+
+@section Scripts 
+{
+<script src="~/js/TagSave.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        TagSave.registerCreateTag("btnCreate", "tagInput");
+    });
+</script>
+}

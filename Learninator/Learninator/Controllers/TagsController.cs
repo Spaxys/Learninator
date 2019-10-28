@@ -9,6 +9,7 @@ using Learninator.Database;
 using Learninator.Models;
 using Learninator.ViewModels;
 using Learninator.Repositories;
+using Newtonsoft.Json;
 
 namespace Learninator.Controllers
 {
@@ -206,6 +207,19 @@ namespace Learninator.Controllers
             {
                 Result = "OK"
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrGetTagByName([FromBody]string name)
+        {
+            if(string.IsNullOrEmpty(name))
+            {
+                return NotFound();
+            }
+
+            var tag = await _tagsRepository.CreateOrGetTagByName(name);
+
+            return Json(tag);
         }
 
 

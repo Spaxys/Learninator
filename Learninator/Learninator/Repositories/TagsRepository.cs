@@ -75,5 +75,23 @@ namespace Learninator.Repositories
                 .FirstOrDefaultAsync(x => x.Id == linkId);
             return linkWithTags;
         }
+
+        public async Task<Tag> CreateOrGetTagByName(string name)
+        {
+            var existingTag = _context.Tags.
+                FirstOrDefault(t => name.Equals(t.Name, StringComparison.OrdinalIgnoreCase));
+            if (existingTag != null)
+                return existingTag;
+            else
+            {
+                var tag = new Tag
+                {
+                    Name = name
+                };
+                _context.Add(tag);
+                await _context.SaveChangesAsync();
+                return tag;
+            }
+        }
     }
 }
