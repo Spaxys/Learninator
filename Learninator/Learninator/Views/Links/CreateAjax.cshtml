@@ -1,0 +1,105 @@
+﻿@model Learninator.ViewModels.LinkWithTagsVM
+
+@{
+    ViewData["Title"] = "CreateAjax";
+}
+
+<h1>CreateAjax</h1>
+
+<h4>Link</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateAjax" id="tagForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Link.Url" class="control-label" ></label>
+                <input asp-for="Link.Url" class="form-control" required id="linkUrl"/>
+                <span asp-validation-for="Link.Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link.Title" class="control-label"></label>
+                <input asp-for="Link.Title" class="form-control" id="linkTitle" />
+                <span asp-validation-for="Link.Title" class="text-danger"></span>
+            </div>
+                </div>
+                </div>
+            <div class="row">
+            <div class="col-md-12">
+
+            <div class="form-group">
+                <div class="control-label">Tags</div>
+                <div id="tagger">
+                    @{await Html.RenderPartialAsync("_TaggerPartial"); }
+                </div>
+            </div>
+            </div>
+            </div>            
+            <div class="row">
+                <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/js/Tag.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            var tagsArray = [];
+
+            @foreach (var t in Model.Tags)
+{
+
+                @:tagsArray.push({Id: @t.Id, Name: "@t.Name"})
+            }
+            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", 1, tagsArray, submitFunction); 
+        });
+
+        function submitFunction(tags) {
+            var url = document.getElementById("linkUrl").value;
+            var title = document.getElementById("linkTitle").value;
+
+            var postObject =
+            {
+                Link: {
+                    Url: url,
+                    title: title
+                },
+                Tags: tags
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Links/CreateAjax",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(postObject),
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText)
+                },
+                success: function (msg) {
+                    var returnUrl = "";
+                    @if (!ViewBag.CreateMany)
+                    {
+                        @:returnUrl = "@Url.Action("Index", "Links")";
+                    }
+                    location.href = returnUrl;
+                    return false;
+                }
+            });
+
+        }
+
+    </script>
+}
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -4,10 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Links</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateAjax" asp-route-createMany="false" class="btn btn-info" style="width:200px; height: 70px; font-size:24pt;">Create one</a>
+    <a asp-action="CreateAjax" asp-route-createMany="true" class="btn btn-info" style="width:250px; height: 70px; font-size:24pt;">Create many...</a>
 </p>
 <table class="table">
     <thead>

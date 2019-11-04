@@ -9,6 +9,7 @@ using Learninator.Database;
 using Learninator.Models;
 using Learninator.ViewModels;
 using Learninator.Repositories;
+using Learninator.Services;
 
 namespace Learninator.Controllers
 {
@@ -16,12 +17,15 @@ namespace Learninator.Controllers
     {
         private readonly LearninatorContext _context;
         private ITagsRepository _tagsRepository;
+        private Learninator.Services.ILinksService _linksService;
 
         public LinksController(LearninatorContext context,
-            ITagsRepository tagsRepository)
+            ITagsRepository tagsRepository,
+            ILinksService linksService)
         {
             _context = context;
             _tagsRepository = tagsRepository;
+            _linksService = linksService;
         }
 
         // GET: Links
@@ -73,6 +77,28 @@ namespace Learninator.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(link);
+        }
+
+        public async Task<IActionResult> CreateAjax(bool createMany)
+        {
+            var model = new LinkWithTagsVM
+            {
+                Link = new Link
+                {
+
+                },
+                Tags = new List<Tag>()
+            };
+            ViewBag.CreateMany = createMany;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAjax([FromBody]LinkWithTagsVM model)
+        {
+
+            var id = _linksService.CreateLinkWithTags(model);
+            return Json(id);
         }
 
         // GET: Links/Edit/5

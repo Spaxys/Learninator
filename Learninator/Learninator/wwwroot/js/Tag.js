@@ -1,6 +1,6 @@
 ﻿var Tag = {
     Tag: class {
-        constructor(tagForm, inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId, linkId, existingTags) {
+        constructor(tagForm, inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId, linkId, existingTags, submitFunction) {
             this.tagForm = tagForm;
             this.inputElemId = inputElemId;
             this.nameElemId = nameElemId;
@@ -9,6 +9,7 @@
             this.btnDeleteLastTagId = btnDeleteLastTagId;
             this.linkId = linkId;
             this.existingTags = existingTags;
+            this.submitFunction = submitFunction;
             var inputTag = document.getElementById(inputElemId);
             var idTag = document.getElementById(idElemId);
             var nameTag = document.getElementById(nameElemId);
@@ -17,7 +18,6 @@
 
             //Setup initial tags
             console.log("Start adding existing tags");
-            debugger;
             for (var t of this.existingTags) {
                 console.log("Adding existing tag: " + JSON.stringify(t));
                 this.fillTagByData(t.Id, t.Name, this.inputElemId, this.tagSetId, this.idElemId);
@@ -48,7 +48,13 @@
             var that2 = this;
             myForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-                that2.saveTags();
+                if (typeof that2.submitFunction === 'undefined') {
+                    //Default behavior is to save the tags on a link
+                    that2.saveTags();
+                } else {
+                    //Calls a callback method with the tag list in a parameter
+                    that2.submitFunction(that2.getTags());
+                }
             });
 
         }
@@ -138,7 +144,6 @@
             }
         }
         saveTags() {
-            //event.preventDefault();
             console.log("saveTags called!");
             var tagSet = document.getElementById("tagSet");
             var tags = tagSet.children;
@@ -169,6 +174,18 @@
                     console.log(msg);
                 }
             });
+        }
+        getTags() {
+            var tagSet = document.getElementById("tagSet");
+            var tags = tagSet.children;
+            var tagsArray = [].slice.call(tags);
+            var tagsMapped = tagsArray.map(function (el) {
+                return {
+                    id: el.id,
+                    name: el.attributes["data-name"].value
+                }
+            });
+            return tagsMapped;
         }
     }
 }
