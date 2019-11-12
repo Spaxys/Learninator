@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Learninator.Library.Extensions;
 
 namespace Learninator.Repositories
 {
@@ -23,6 +24,7 @@ namespace Learninator.Repositories
 
         public async Task<bool> SaveTagsOnLink(List<Tag> tags, int linkId)
         {
+            tags = tags.DistinctBy(x => x.Id).ToList();
             //Update behavior inspired by the following post:
             // https://stackoverflow.com/questions/42735368/updating-related-data-with-entity-framework-core
             var link = _context.Links

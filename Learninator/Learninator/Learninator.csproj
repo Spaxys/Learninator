@@ -17,4 +17,9 @@
     <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\Learninator.Library\Learninator.Library.csproj" />
+  </ItemGroup>
+
 </Project>
