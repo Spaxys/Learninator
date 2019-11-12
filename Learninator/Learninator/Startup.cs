@@ -35,7 +35,9 @@ namespace Learninator
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<LearninatorContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:LearninatorContext"]));
+            services.AddDbContext<LearninatorContext>(opts => 
+            opts.UseSqlServer(Configuration["ConnectionStrings:LearninatorContext"]),
+                ServiceLifetime.Transient);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<ILinksRepository, LinksRepository>();

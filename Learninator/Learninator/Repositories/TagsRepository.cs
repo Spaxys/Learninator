@@ -62,7 +62,7 @@ namespace Learninator.Repositories
 
                 }
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return true;
         }
 
