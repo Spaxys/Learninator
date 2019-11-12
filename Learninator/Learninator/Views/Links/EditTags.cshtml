@@ -33,7 +33,7 @@
 
                 @:tagsArray.push({Id: @t.Id, Name: "@t.Name"})
             }
-            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", 1, tagsArray); 
+            var tagger = new Tag.Tag("tagForm", "tagInput", "tagName", "tagSet", "tagId", "btnDeleteLastTag", @Model.LinkId, tagsArray); 
         });
 
     </script>
