@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Learninator.Models;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Learninator.Database
 {
-    public class LearninatorContext : DbContext
+    public class LearninatorContext : IdentityDbContext
     {
             public LearninatorContext(DbContextOptions<LearninatorContext> options)
                 : base(options)
@@ -20,6 +21,7 @@ namespace Learninator.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<LinkTag>()
                 .HasKey(bc => new { bc.LinkId, bc.TagId });
             modelBuilder.Entity<LinkTag>()
@@ -34,7 +36,7 @@ namespace Learninator.Database
                 modelBuilder.Entity<Link>().ToTable("Link");
                 modelBuilder.Entity<Tag>().ToTable("Tag");
                 modelBuilder.Entity<LinkTag>().ToTable("LinkTag");
-
+            
         }
 
         private void Seed(ModelBuilder modelBuilder)

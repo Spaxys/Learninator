@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,10 @@ namespace Learninator
             services.AddDbContext<LearninatorContext>(opts => 
             opts.UseSqlServer(Configuration["ConnectionStrings:LearninatorContext"]),
                 ServiceLifetime.Transient);
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<LearninatorContext>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<ILinksRepository, LinksRepository>();
@@ -60,6 +65,9 @@ namespace Learninator
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
