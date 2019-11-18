@@ -35,3 +35,7 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+#Custom ignores
+Learninator/Learninator/Learninator/Configs/Custom/
+/Learninator/Learninator/Configs/Custom/identitysettings.json

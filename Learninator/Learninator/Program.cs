@@ -19,6 +19,7 @@ namespace Learninator
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(AddCustomConfiguration)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging =>
                 {
@@ -29,5 +30,13 @@ namespace Learninator
                     logging.AddConsole();
                     logging.AddDebug();
                 });
+
+        public static void AddCustomConfiguration(WebHostBuilderContext context, IConfigurationBuilder builder)
+        {
+                builder.SetBasePath(context.HostingEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("Configs/Custom/identitysettings.json", optional: true, reloadOnChange: true);
+        }
     }
 }

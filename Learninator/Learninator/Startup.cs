@@ -43,6 +43,20 @@ namespace Learninator
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<LearninatorContext>();
 
+            services.Configure<IdentityOptions>(options =>
+           {
+               var passwordPolicies = Configuration.GetSection("IdentitySettings:PasswordPolicy");
+               if (passwordPolicies != null)
+               {
+                   options.Password.RequiredLength = int.Parse(passwordPolicies["RequiredLength"]);
+                   options.Password.RequiredUniqueChars = int.Parse(passwordPolicies["RequiredUniqueChars"]);
+                   options.Password.RequireDigit = bool.Parse(passwordPolicies["RequireDigit"]);
+                   options.Password.RequireLowercase = bool.Parse(passwordPolicies["RequireLowercase"]);
+                   options.Password.RequireUppercase = bool.Parse(passwordPolicies["RequireUppercase"]);
+                   options.Password.RequireNonAlphanumeric = bool.Parse(passwordPolicies["RequireNonAlphanumeric"]);
+               }
+           });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<ITagsRepository, TagsRepository>();
             services.AddScoped<ILinksRepository, LinksRepository>();
@@ -52,6 +66,7 @@ namespace Learninator
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
