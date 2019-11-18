@@ -1,14 +1,14 @@
 ﻿var TagSave = {
-    registerCreateTag: function (btnCreateId, inputElemId) {
+    registerCreateTag: function (btnCreateId, inputElemId, tagger) {
         $("#" + btnCreateId).on("click", function () {
-            debugger;
             var tagName = $("#" + inputElemId).val();
             TagSave.createOrGetTag(tagName)
                 .then(x => {
-                    alert(JSON.stringify(x));
+                    tagger.fillTagByData(x.id, x.name, tagger.inputElemId, tagger.tagSetId, tagger.idElemId);
+                    tagger.clearButtons(tagger.nameElemId);
                 })
                 .catch(x => {
-                    alert(JSON.stringify(x))
+                    console.log(JSON.stringify(x))
                 });
         });
     },

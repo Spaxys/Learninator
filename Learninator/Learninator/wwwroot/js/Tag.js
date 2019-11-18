@@ -1,4 +1,6 @@
-﻿var Tag = {
+﻿
+
+var Tag = {
     Tag: class {
         constructor(tagForm, inputElemId, nameElemId, tagSetId, idElemId, btnDeleteLastTagId, linkId, existingTags, submitFunction) {
             this.tagForm = tagForm;
@@ -35,6 +37,7 @@
                         console.log(error)
                         $(idTag).html("");
                         $(nameTag).html("");
+                        that.handleSearchResults([], inputElemId, idElemId, nameElemId, tagSetId);
                     });
             });
 
@@ -142,6 +145,14 @@
                 nameTag.appendChild(tag);
                 new TagButton(tag, tagInputId, tagSetId, nameTagId, idTagId, this);
             }
+            var btnNewTag = document.createElement("span");
+            btnNewTag.id = "btnNewTag";
+            btnNewTag.innerText = "New tag...";
+            btnNewTag.classList.add("btn");
+            btnNewTag.classList.add("btn-default");
+            btnNewTag.classList.add("tagButton");
+            nameTag.appendChild(btnNewTag);
+            TagSave.registerCreateTag(btnNewTag.id, this.inputElemId, this);
         }
         saveTags() {
             console.log("saveTags called!");
