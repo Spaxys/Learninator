@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Learninator.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +23,14 @@ namespace Learninator.Controllers
             this.signInManager = signInManager;
         }
         // GET: /<controller>/
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
@@ -60,5 +63,34 @@ namespace Learninator.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await signInManager.PasswordSignInAsync(
+                        model.Email,
+                        model.Password,
+                        model.RememberMe,
+                        false
+                    );
+
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+            }
+
+            return View(model);
+        }
     }
 }

@@ -10,6 +10,7 @@ using Learninator.Models;
 using Learninator.ViewModels;
 using Learninator.Repositories;
 using Learninator.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Learninator.Controllers
 {
