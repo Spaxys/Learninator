@@ -63,6 +63,7 @@ namespace Learninator.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
         {
@@ -71,8 +72,9 @@ namespace Learninator.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, [FromQuery(Name = "returnUrl")] string ReturnUrl)
         {
+            var foo = Request;
             if(ModelState.IsValid)
             {
                 var result = await signInManager.PasswordSignInAsync(
@@ -84,6 +86,12 @@ namespace Learninator.Controllers
 
                 if(result.Succeeded)
                 {
+                    if(!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    {
+                        Console.WriteLine("ReturnUrl specified!!!");
+                        return LocalRedirect(ReturnUrl);
+                    }
+                    Console.WriteLine("No ReturnUrl!!!");
                     return RedirectToAction("Index", "Home");
                 }
 
