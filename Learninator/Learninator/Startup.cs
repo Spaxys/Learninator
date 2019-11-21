@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Learninator.Database;
+using Learninator.Models;
 using Learninator.Repositories;
 using Learninator.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,7 @@ namespace Learninator
             opts.UseSqlServer(Configuration["ConnectionStrings:LearninatorContext"]),
                 ServiceLifetime.Transient);
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<LearninatorContext>();
 
             services.Configure<IdentityOptions>(options =>

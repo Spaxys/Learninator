@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Learninator.Database
 {
-    public class LearninatorContext : IdentityDbContext
+    public class LearninatorContext : IdentityDbContext<ApplicationUser>
     {
             public LearninatorContext(DbContextOptions<LearninatorContext> options)
                 : base(options)
