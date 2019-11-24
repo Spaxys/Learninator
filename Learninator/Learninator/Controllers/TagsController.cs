@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Learninator.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TagsController : Controller
     {
         private readonly LearninatorContext _context;
