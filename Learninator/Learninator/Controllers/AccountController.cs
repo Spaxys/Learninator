@@ -44,16 +44,26 @@ namespace Learninator.Controllers
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 
+                IdentityResult roleResult = null;
                 if(result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    roleResult = await userManager.AddToRoleAsync(user, "User");
+                    if (roleResult.Succeeded)
+                    {
+                        await signInManager.SignInAsync(user, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
 
                 foreach(var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
+                foreach (var error in roleResult.Errors)
+                {
+                    ModelState.AddModelError("", "RoleError: " + error.Description);
+                }
+
             }
             return View(model);
         }

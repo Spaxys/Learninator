@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject  SignInManager<ApplicationUser> signInManager;
+@inject  UserManager<ApplicationUser> userManager;
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,24 +38,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Links" asp-action="Index">Links</a>
                         </li>
+                        @if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="Index">Tags</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Test" asp-action="Index">Test</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">Admin</a>
                         </li>
+
+                        }
+
                     </ul>
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <form method="post" asp-action="logout" asp-controller="account">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">Logout @User.Identity.Name</button>
+                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">Logout @User.Identity.Name&nbsp;
+                                    @{
+                                        var roles = string.Join(',', await userManager.GetRolesAsync(await userManager.GetUserAsync(User)));
+
+                                    } (@roles)
+                                    </button>
                                 </form>
                             </li>
                         }
-                        else
-                        {
+                                            else
+                                            {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
@@ -71,6 +85,7 @@
     <div class="container">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
+            <partial name="_BackButtonPartial" />
             @RenderBody()
         </main>
     </div>
