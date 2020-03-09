@@ -33,10 +33,14 @@ namespace Learninator.Database
                 .WithMany(l => l.LinkTags)
                 .HasForeignKey(lt => lt.TagId);
 
-                modelBuilder.Entity<Link>().ToTable("Link");
-                modelBuilder.Entity<Tag>().ToTable("Tag");
-                modelBuilder.Entity<LinkTag>().ToTable("LinkTag");
-            
+            modelBuilder.Entity<Link>().ToTable("Link");
+            modelBuilder.Entity<Tag>().ToTable("Tag");
+            modelBuilder.Entity<LinkTag>().ToTable("LinkTag");
+
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         private void Seed(ModelBuilder modelBuilder)
